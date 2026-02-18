@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "burden:fabric"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "FSF",
+    "FCF",
+    "LSL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "burden:backpack"
+  }
+}
