@@ -1,5 +1,6 @@
-package dev.sycraxe.burden.gui.backpack;
+package dev.sycraxe.burden.core.gui;
 
+import dev.sycraxe.burden.core.gui.menu.AbstractBackpackMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;

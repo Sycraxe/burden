@@ -1,17 +1,17 @@
-package dev.sycraxe.burden.event.backpack;
+package dev.sycraxe.burden.core.event;
 
-import dev.sycraxe.burden.data.BackpackEventData;
-import dev.sycraxe.burden.gui.backpack.BackpackMenuProvider;
-import dev.sycraxe.burden.gui.backpack.AbstractBackpackMenu;
-import dev.sycraxe.burden.gui.backpack.menus.EquippedBackpackMenu;
-import dev.sycraxe.burden.gui.backpack.menus.HandheldBackpackMenu;
+import dev.sycraxe.burden.core.codec.BackpackEventCodec;
+import dev.sycraxe.burden.core.gui.BackpackMenuProvider;
+import dev.sycraxe.burden.core.gui.menu.AbstractBackpackMenu;
+import dev.sycraxe.burden.core.gui.menu.EquippedBackpackMenu;
+import dev.sycraxe.burden.core.gui.menu.HandheldBackpackMenu;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.function.BiFunction;
 
 public class BackpackServerPayloadHandler {
-    public static void handleDataOnMain(final BackpackEventData data, final IPayloadContext context) {
+    public static void handleDataOnMain(final BackpackEventCodec data, final IPayloadContext context) {
         context.enqueueWork(() -> {
             if (!data.equipped()) {
                 context.player().openMenu(new BackpackMenuProvider(data.stack(), new BiFunction<Integer, Inventory, AbstractBackpackMenu>() {

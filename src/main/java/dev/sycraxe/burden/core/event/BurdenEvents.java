@@ -1,9 +1,7 @@
-package dev.sycraxe.burden.event;
+package dev.sycraxe.burden.core.event;
 
 import dev.sycraxe.burden.Burden;
-import dev.sycraxe.burden.event.backpack.BackpackClientPayloadHandler;
-import dev.sycraxe.burden.event.backpack.BackpackServerPayloadHandler;
-import dev.sycraxe.burden.data.BackpackEventData;
+import dev.sycraxe.burden.core.codec.BackpackEventCodec;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
@@ -18,10 +16,10 @@ public class BurdenEvents {
     public static void register(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.playBidirectional(
-                BackpackEventData.TYPE,
-                BackpackEventData.STREAM_CODEC,
+                BackpackEventCodec.TYPE,
+                BackpackEventCodec.STREAM_CODEC,
                 new DirectionalPayloadHandler<>(
-                        BackpackClientPayloadHandler::handleDataOnMain,
+                        (data, context) -> {},
                         BackpackServerPayloadHandler::handleDataOnMain
                 )
         );

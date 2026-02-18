@@ -1,8 +1,10 @@
-package dev.sycraxe.burden.gui.backpack;
+package dev.sycraxe.burden.core.gui.menu;
 
 import com.mojang.datafixers.util.Pair;
+import dev.sycraxe.burden.AllMenuTypes;
 import dev.sycraxe.burden.Burden;
-import dev.sycraxe.burden.item.backpack.BackpackContainer;
+import dev.sycraxe.burden.core.container.BackpackContainer;
+import dev.sycraxe.burden.AllItem;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
@@ -136,7 +138,7 @@ public abstract class AbstractBackpackMenu extends AbstractContainerMenu {
             } catch (Exception exception) {
                 CrashReport crashreport = CrashReport.forThrowable(exception, "Container click");
                 CrashReportCategory crashreportcategory = crashreport.addCategory("Click info");
-                crashreportcategory.setDetail("Menu Type", () -> Burden.EQUIPPED_BACKPACK_MENU.get().toString());
+                crashreportcategory.setDetail("Menu Type", () -> AllMenuTypes.EQUIPPED_BACKPACK_MENU.get().toString());
                 crashreportcategory.setDetail("Menu Class", () -> this.getClass().getCanonicalName());
                 crashreportcategory.setDetail("Slot Count", this.slots.size());
                 crashreportcategory.setDetail("Slot", slotId);
@@ -211,7 +213,7 @@ public abstract class AbstractBackpackMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return !stack.is(Burden.BACKPACK);
+            return !stack.is(AllItem.BACKPACK);
         }
     }
 

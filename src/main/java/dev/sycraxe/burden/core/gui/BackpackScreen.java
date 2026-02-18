@@ -1,6 +1,7 @@
-package dev.sycraxe.burden.gui.backpack;
+package dev.sycraxe.burden.core.gui;
 
 import dev.sycraxe.burden.Burden;
+import dev.sycraxe.burden.core.gui.menu.AbstractBackpackMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;

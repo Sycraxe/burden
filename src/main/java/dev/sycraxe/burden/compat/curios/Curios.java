@@ -1,6 +1,6 @@
-package dev.sycraxe.burden.compat;
+package dev.sycraxe.burden.compat.curios;
 
-import dev.sycraxe.burden.Burden;
+import dev.sycraxe.burden.AllItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -21,7 +21,7 @@ public class Curios {
         IDynamicStackHandler stacks = slot.getStacks();
         for (int i = 0; i < stacks.getSlots(); i++) {
             ItemStack stack = stacks.getStackInSlot(i);
-            if (stack.is(Burden.BACKPACK)) {
+            if (stack.is(AllItem.BACKPACK)) {
                 return stack;
             }
         }

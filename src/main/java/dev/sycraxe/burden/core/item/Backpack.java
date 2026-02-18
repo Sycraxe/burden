@@ -1,6 +1,6 @@
-package dev.sycraxe.burden.item.backpack;
+package dev.sycraxe.burden.core.item;
 
-import dev.sycraxe.burden.data.BackpackEventData;
+import dev.sycraxe.burden.core.codec.BackpackEventCodec;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -19,7 +19,7 @@ public class Backpack extends Item implements Equipable {
         if (!level.isClientSide()) {
             return InteractionResultHolder.sidedSuccess(stack, false);
         }
-        PacketDistributor.sendToServer(new BackpackEventData(stack, false));
+        PacketDistributor.sendToServer(new BackpackEventCodec(stack, false));
         return InteractionResultHolder.sidedSuccess(stack, true);
     }
 

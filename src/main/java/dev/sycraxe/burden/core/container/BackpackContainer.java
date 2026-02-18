@@ -1,4 +1,4 @@
-package dev.sycraxe.burden.item.backpack;
+package dev.sycraxe.burden.core.container;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.SimpleContainer;

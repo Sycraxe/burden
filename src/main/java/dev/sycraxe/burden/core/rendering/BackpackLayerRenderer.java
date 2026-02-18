@@ -1,7 +1,8 @@
-package dev.sycraxe.burden.rendering.backpack;
+package dev.sycraxe.burden.core.rendering;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.sycraxe.burden.Burden;
+import dev.sycraxe.burden.AllItem;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -37,7 +38,7 @@ public class BackpackLayerRenderer extends RenderLayer<AbstractClientPlayer, Pla
             float netHeadYaw,
             float headPitch
     ) {
-        if (livingEntity.getInventory().getItem(38).is(Burden.BACKPACK)) {
+        if (livingEntity.getInventory().getItem(38).is(AllItem.BACKPACK)) {
             this.model.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             this.model.renderToBuffer(
                     poseStack,

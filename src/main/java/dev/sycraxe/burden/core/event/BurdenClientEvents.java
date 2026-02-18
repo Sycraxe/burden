@@ -1,13 +1,15 @@
-package dev.sycraxe.burden.event;
+package dev.sycraxe.burden.core.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import dev.sycraxe.burden.AllMenuTypes;
 import dev.sycraxe.burden.Burden;
-import dev.sycraxe.burden.compat.Curios;
-import dev.sycraxe.burden.data.BackpackEventData;
-import dev.sycraxe.burden.gui.backpack.BackpackScreen;
-import dev.sycraxe.burden.gui.backpack.menus.EquippedBackpackMenu;
-import dev.sycraxe.burden.rendering.backpack.BackpackLayerRenderer;
-import dev.sycraxe.burden.rendering.backpack.BackpackModel;
+import dev.sycraxe.burden.compat.curios.Curios;
+import dev.sycraxe.burden.core.codec.BackpackEventCodec;
+import dev.sycraxe.burden.core.gui.BackpackScreen;
+import dev.sycraxe.burden.core.gui.menu.EquippedBackpackMenu;
+import dev.sycraxe.burden.AllItem;
+import dev.sycraxe.burden.core.rendering.BackpackLayerRenderer;
+import dev.sycraxe.burden.core.rendering.BackpackModel;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -51,16 +53,16 @@ public class BurdenClientEvents {
         while (BACKPACK_MAPPING.get().consumeClick()) {
             Player player = Minecraft.getInstance().player;
             ItemStack stack = Burden.isCuriosCompatLoaded() ? Curios.getEquippedBackpack(player) : player.getInventory().getItem(EquippedBackpackMenu.CHEST_INVENTORY_SLOT);
-            if (stack.is(Burden.BACKPACK)) {
-                PacketDistributor.sendToServer(new BackpackEventData(stack, true));
+            if (stack.is(AllItem.BACKPACK)) {
+                PacketDistributor.sendToServer(new BackpackEventCodec(stack, true));
             }
         }
     }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(Burden.EQUIPPED_BACKPACK_MENU.get(), BackpackScreen::new);
-        event.register(Burden.HANDHELD_BACKPACK_MENU.get(), BackpackScreen::new);
+        event.register(AllMenuTypes.EQUIPPED_BACKPACK_MENU.get(), BackpackScreen::new);
+        event.register(AllMenuTypes.HANDHELD_BACKPACK_MENU.get(), BackpackScreen::new);
     }
 
     @SubscribeEvent
