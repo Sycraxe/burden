@@ -1,20 +1,20 @@
-package dev.sycraxe.burden.core.gui;
+package dev.sycraxe.burden.gui;
 
 import dev.sycraxe.burden.Burden;
-import dev.sycraxe.burden.core.gui.menu.AbstractBackpackMenu;
+import dev.sycraxe.burden.gui.menu.BackpackMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class BackpackScreen extends AbstractContainerScreen<AbstractBackpackMenu> {
+public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
     private static final ResourceLocation BACKPACK =
             ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/gui/container/backpack.png");
     private static final ResourceLocation INVENTORY =
             ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/gui/container/inventory.png");
 
-    public BackpackScreen(AbstractBackpackMenu menu, Inventory playerInventory, Component title) {
+    public BackpackScreen(BackpackMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 248;
         this.imageHeight = 191;
@@ -41,5 +41,4 @@ public class BackpackScreen extends AbstractContainerScreen<AbstractBackpackMenu
         guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 13942436, false);
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 4210752, false);
     }
-
 }

@@ -1,7 +1,6 @@
 package dev.sycraxe.burden;
 
-import dev.sycraxe.burden.core.gui.menu.EquippedBackpackMenu;
-import dev.sycraxe.burden.core.gui.menu.HandheldBackpackMenu;
+import dev.sycraxe.burden.gui.menu.BackpackMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -13,8 +12,7 @@ import java.util.function.Supplier;
 public class AllMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, Burden.MOD_ID);
 
-    public static final Supplier<MenuType<EquippedBackpackMenu>> EQUIPPED_BACKPACK_MENU = MENU_TYPES.register("equipped_backpack_menu", () -> new MenuType<>(EquippedBackpackMenu::new, FeatureFlags.DEFAULT_FLAGS));
-    public static final Supplier<MenuType<HandheldBackpackMenu>> HANDHELD_BACKPACK_MENU = MENU_TYPES.register("handheld_backpack_menu", () -> new MenuType<>(HandheldBackpackMenu::new, FeatureFlags.DEFAULT_FLAGS));
+    public static final Supplier<MenuType<BackpackMenu>> BACKPACK_MENU = MENU_TYPES.register("backpack_menu", () -> new MenuType<>(BackpackMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
     public static void register(IEventBus bus) {
         MENU_TYPES.register(bus);

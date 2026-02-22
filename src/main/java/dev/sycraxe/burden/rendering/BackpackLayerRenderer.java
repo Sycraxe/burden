@@ -1,4 +1,4 @@
-package dev.sycraxe.burden.core.rendering;
+package dev.sycraxe.burden.rendering;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.sycraxe.burden.Burden;
