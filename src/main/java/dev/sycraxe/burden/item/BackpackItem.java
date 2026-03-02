@@ -1,27 +1,43 @@
 package dev.sycraxe.burden.item;
 
 import dev.sycraxe.burden.AllBlocks;
+import dev.sycraxe.burden.AllItem;
+import dev.sycraxe.burden.Burden;
+import dev.sycraxe.burden.compat.curios.Curios;
 import dev.sycraxe.burden.gui.menu.BackpackItemMenuProvider;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-import static dev.sycraxe.burden.gui.menu.BackpackItemMenuProvider.CLICK_INIT_SLOT_FUNCTION;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 public class BackpackItem extends BlockItem implements Equipable {
+    public static final Map<BackpackItemOpeningMode, Function<Inventory, ItemStack>> OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER;
+    public static final Map<BackpackItemOpeningMode, Function<Inventory, Optional<Integer>>> OPENING_MODES_UNPICKABLE_SLOT;
+    public enum BackpackItemOpeningMode {
+        CURIOS,
+        EQUIPPED,
+        MAIN_HAND,
+        SECONDARY_HAND,
+        NONE
+    }
+
     public BackpackItem() {
         super(AllBlocks.BACKPACK.get(), new Properties().stacksTo(1));
     }
 
     public InteractionResult useOn(UseOnContext context) {
         if (context.getPlayer().isCrouching()) {
-            InteractionResult result = this.place(new BlockPlaceContext(context));
+            this.place(new BlockPlaceContext(context));
         }
         return InteractionResult.PASS;
     }
@@ -29,7 +45,11 @@ public class BackpackItem extends BlockItem implements Equipable {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide() && !player.isCrouching()) {
-            player.openMenu(new BackpackItemMenuProvider(CLICK_INIT_SLOT_FUNCTION.apply(player.getInventory()).getHoverName(), CLICK_INIT_SLOT_FUNCTION));
+            BackpackItem.BackpackItemOpeningMode mode = BackpackItem.onClickOpeningMode(player.getInventory());
+            if (mode != BackpackItem.BackpackItemOpeningMode.NONE) {
+                Function<Inventory, ItemStack> origin = BackpackItem.OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(mode);
+                player.openMenu(new BackpackItemMenuProvider(origin.apply(player.getInventory()).getHoverName(), origin, BackpackItem.OPENING_MODES_UNPICKABLE_SLOT.get(mode).apply(player.getInventory())));
+            }
         }
         return InteractionResultHolder.success(stack);
     }
@@ -37,5 +57,40 @@ public class BackpackItem extends BlockItem implements Equipable {
     @Override
     public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.CHEST;
+    }
+
+    public static BackpackItemOpeningMode onKeybindOpeningMode(Inventory inventory) {
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.CURIOS).apply(inventory).is(AllItem.BACKPACK)) {
+            return BackpackItemOpeningMode.CURIOS;
+        }
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.EQUIPPED).apply(inventory).is(AllItem.BACKPACK)) {
+            return BackpackItemOpeningMode.EQUIPPED;
+        }
+        return onClickOpeningMode(inventory);
+    }
+
+    public static BackpackItemOpeningMode onClickOpeningMode(Inventory inventory) {
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.MAIN_HAND).apply(inventory).is(AllItem.BACKPACK)) {
+            return BackpackItemOpeningMode.MAIN_HAND;
+        }
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.SECONDARY_HAND).apply(inventory).is(AllItem.BACKPACK)) {
+            return BackpackItemOpeningMode.SECONDARY_HAND;
+        }
+        return BackpackItemOpeningMode.NONE;
+    }
+
+    static {
+        OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER = Map.of(
+                BackpackItemOpeningMode.CURIOS, (inventory -> Burden.isCuriosCompatLoaded() ? Curios.getEquippedBackpack(inventory.player) : ItemStack.EMPTY),
+                BackpackItemOpeningMode.EQUIPPED, (inventory -> inventory.getItem(38)),
+                BackpackItemOpeningMode.MAIN_HAND, (inventory -> inventory.getItem(inventory.selected)),
+                BackpackItemOpeningMode.SECONDARY_HAND, (inventory -> inventory.getItem(Inventory.SLOT_OFFHAND))
+        );
+        OPENING_MODES_UNPICKABLE_SLOT = Map.of(
+                BackpackItemOpeningMode.CURIOS, (inventory -> Optional.empty()),
+                BackpackItemOpeningMode.EQUIPPED, (inventory -> Optional.of(38)),
+                BackpackItemOpeningMode.MAIN_HAND, (inventory -> Optional.of(inventory.selected)),
+                BackpackItemOpeningMode.SECONDARY_HAND, (inventory -> Optional.of(Inventory.SLOT_OFFHAND))
+        );
     }
 }
