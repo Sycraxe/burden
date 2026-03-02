@@ -1,10 +1,9 @@
-package dev.sycraxe.burden.item;
+package dev.sycraxe.burden.backpack;
 
-import dev.sycraxe.burden.AllBlocks;
-import dev.sycraxe.burden.AllItem;
+import dev.sycraxe.burden.register.ModBlock;
+import dev.sycraxe.burden.register.ModItem;
 import dev.sycraxe.burden.Burden;
 import dev.sycraxe.burden.compat.curios.Curios;
-import dev.sycraxe.burden.gui.menu.BackpackItemMenuProvider;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -32,7 +31,7 @@ public class BackpackItem extends BlockItem implements Equipable {
     }
 
     public BackpackItem() {
-        super(AllBlocks.BACKPACK.get(), new Properties().stacksTo(1));
+        super(ModBlock.BACKPACK.get(), new Properties().stacksTo(1));
     }
 
     public InteractionResult useOn(UseOnContext context) {
@@ -60,20 +59,20 @@ public class BackpackItem extends BlockItem implements Equipable {
     }
 
     public static BackpackItemOpeningMode onKeybindOpeningMode(Inventory inventory) {
-        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.CURIOS).apply(inventory).is(AllItem.BACKPACK)) {
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.CURIOS).apply(inventory).is(ModItem.BACKPACK)) {
             return BackpackItemOpeningMode.CURIOS;
         }
-        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.EQUIPPED).apply(inventory).is(AllItem.BACKPACK)) {
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.EQUIPPED).apply(inventory).is(ModItem.BACKPACK)) {
             return BackpackItemOpeningMode.EQUIPPED;
         }
         return onClickOpeningMode(inventory);
     }
 
     public static BackpackItemOpeningMode onClickOpeningMode(Inventory inventory) {
-        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.MAIN_HAND).apply(inventory).is(AllItem.BACKPACK)) {
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.MAIN_HAND).apply(inventory).is(ModItem.BACKPACK)) {
             return BackpackItemOpeningMode.MAIN_HAND;
         }
-        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.SECONDARY_HAND).apply(inventory).is(AllItem.BACKPACK)) {
+        if (OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER.get(BackpackItemOpeningMode.SECONDARY_HAND).apply(inventory).is(ModItem.BACKPACK)) {
             return BackpackItemOpeningMode.SECONDARY_HAND;
         }
         return BackpackItemOpeningMode.NONE;

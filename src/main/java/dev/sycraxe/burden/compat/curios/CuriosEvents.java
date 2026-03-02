@@ -1,6 +1,6 @@
 package dev.sycraxe.burden.compat.curios;
 
-import dev.sycraxe.burden.AllItem;
+import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -29,11 +29,11 @@ public class CuriosEvents {
                     @Override
                     public void curioTick(SlotContext slotContext) {}
                 },
-                AllItem.BACKPACK.get()
+                ModItem.BACKPACK.get()
         );
     }
 
     public void clientSetup(final FMLClientSetupEvent evt) {
-        CuriosRendererRegistry.register(AllItem.BACKPACK.get(), BackpackCurioRenderer::new);
+        CuriosRendererRegistry.register(ModItem.BACKPACK.get(), BackpackCurioRenderer::new);
     }
 }

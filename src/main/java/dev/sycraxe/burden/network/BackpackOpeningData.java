@@ -1,4 +1,4 @@
-package dev.sycraxe.burden.networking;
+package dev.sycraxe.burden.network;
 
 import dev.sycraxe.burden.Burden;
 import io.netty.buffer.ByteBuf;

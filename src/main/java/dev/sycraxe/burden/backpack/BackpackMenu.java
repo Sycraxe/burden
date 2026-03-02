@@ -1,9 +1,8 @@
-package dev.sycraxe.burden.gui.menu;
+package dev.sycraxe.burden.backpack;
 
 import com.mojang.datafixers.util.Pair;
-import dev.sycraxe.burden.AllItem;
-import dev.sycraxe.burden.AllMenuTypes;
-import dev.sycraxe.burden.container.ItemBackpackContainer;
+import dev.sycraxe.burden.register.ModItem;
+import dev.sycraxe.burden.register.ModMenuType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -28,7 +27,7 @@ public class BackpackMenu extends AbstractContainerMenu {
     private final Container container;
 
     public BackpackMenu(int id, Inventory inventory) {
-        this(id, inventory, new SimpleContainer(ItemBackpackContainer.DEFAULT_SIZE));
+        this(id, inventory, new SimpleContainer(BackpackItemContainer.DEFAULT_SIZE));
     }
 
     public BackpackMenu(int id, Inventory inventory, Container container) {
@@ -36,7 +35,7 @@ public class BackpackMenu extends AbstractContainerMenu {
     }
 
     public BackpackMenu(int id, Inventory inventory, Container container, Optional<Integer> unpickableSlot) {
-        super(AllMenuTypes.BACKPACK_MENU.get(), id);
+        super(ModMenuType.BACKPACK_MENU.get(), id);
         this.container = container;
 
         for (int i1 = 0; i1 < 3; i1++) {
@@ -44,7 +43,7 @@ public class BackpackMenu extends AbstractContainerMenu {
                 this.addSlot(new Slot(this.container, j1 + i1 * 9, j1 * 18 + 44, i1 * 18 + 23) {
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        return !stack.is(AllItem.BACKPACK);
+                        return !stack.is(ModItem.BACKPACK);
                     }
                 });
             }

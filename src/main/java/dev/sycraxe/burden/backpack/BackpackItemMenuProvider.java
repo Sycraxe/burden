@@ -1,13 +1,11 @@
-package dev.sycraxe.burden.gui.menu;
+package dev.sycraxe.burden.backpack;
 
-import dev.sycraxe.burden.container.ItemBackpackContainer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -33,7 +31,7 @@ public class BackpackItemMenuProvider implements MenuProvider {
     }
 
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new BackpackMenu(i, inventory, new ItemBackpackContainer(triggererSlotGetter.apply(inventory), () -> triggererSlotGetter.apply(inventory)), this.unpickableSlot);
+    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        return new BackpackMenu(i, inventory, new BackpackItemContainer(triggererSlotGetter.apply(inventory), () -> triggererSlotGetter.apply(inventory)), this.unpickableSlot);
     }
 }

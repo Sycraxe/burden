@@ -1,8 +1,7 @@
-package dev.sycraxe.burden.block;
+package dev.sycraxe.burden.backpack;
 
 import com.mojang.serialization.MapCodec;
-import dev.sycraxe.burden.AllItem;
-import dev.sycraxe.burden.block.entity.BackpackBlockEntity;
+import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -23,8 +22,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class BackpackBlock extends BaseEntityBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(4, 0, 6, 12, 8, 10);
@@ -55,7 +52,6 @@ public class BackpackBlock extends BaseEntityBlock {
         return WEST_EAST_SHAPE;
     }
 
-    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
@@ -87,7 +83,7 @@ public class BackpackBlock extends BaseEntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof BackpackBlockEntity backpackBlockEntity) {
             if (!level.isClientSide && player.isCreative() && !backpackBlockEntity.isEmpty()) {
-                ItemStack itemstack = AllItem.BACKPACK.toStack();
+                ItemStack itemstack = ModItem.BACKPACK.toStack();
                 itemstack.applyComponents(blockEntity.collectComponents());
                 ItemEntity itementity = new ItemEntity(level, (double)pos.getX() + (double)0.5F, (double)pos.getY() + (double)0.5F, (double)pos.getZ() + (double)0.5F, itemstack);
                 itementity.setDefaultPickUpDelay();

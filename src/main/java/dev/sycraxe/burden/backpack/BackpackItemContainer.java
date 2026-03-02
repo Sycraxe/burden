@@ -1,4 +1,4 @@
-package dev.sycraxe.burden.container;
+package dev.sycraxe.burden.backpack;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.SimpleContainer;
@@ -8,12 +8,12 @@ import net.minecraft.world.item.component.ItemContainerContents;
 
 import java.util.function.Supplier;
 
-public class ItemBackpackContainer extends SimpleContainer {
+public class BackpackItemContainer extends SimpleContainer {
     public static final int DEFAULT_SIZE = 27;
     private final ItemStack stack;
     private final Supplier<ItemStack> originSlotGetter;
 
-    public ItemBackpackContainer(ItemStack stack, Supplier<ItemStack> originSlotGetter) {
+    public BackpackItemContainer(ItemStack stack, Supplier<ItemStack> originSlotGetter) {
         super(DEFAULT_SIZE);
         this.stack = stack;
         this.originSlotGetter = originSlotGetter;

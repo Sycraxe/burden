@@ -1,29 +1,30 @@
 package dev.sycraxe.burden.event;
 
-import dev.sycraxe.burden.Burden;
-import dev.sycraxe.burden.gui.menu.BackpackItemMenuProvider;
-import dev.sycraxe.burden.item.BackpackItem;
-import dev.sycraxe.burden.networking.BackpackOpeningData;
+import dev.sycraxe.burden.backpack.BackpackItemMenuProvider;
+import dev.sycraxe.burden.backpack.BackpackItem;
+import dev.sycraxe.burden.network.BackpackOpeningData;
+import dev.sycraxe.burden.register.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.function.Function;
 
-@Mod(value = Burden.MOD_ID)
-@EventBusSubscriber(modid = Burden.MOD_ID)
-public class BurdenEvents {
-    public BurdenEvents(ModContainer container) {}
+public class CommonEventHandler {
+    public static void register(IEventBus modBus) {
+        ModBlock.register(modBus);
+        ModBlockEntities.register(modBus);
+        ModItem.register(modBus);
+        ModMenuType.register(modBus);
+        ModTab.register(modBus);
+        modBus.addListener(CommonEventHandler::registerPayloads);
+    }
 
-    @SubscribeEvent
-    public static void register(final RegisterPayloadHandlersEvent event) {
+    private static void registerPayloads(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.playToServer(
                 BackpackOpeningData.TYPE,
@@ -37,5 +38,5 @@ public class BurdenEvents {
                     }
                 }
         );
-    }
+    };
 }

@@ -1,8 +1,7 @@
-package dev.sycraxe.burden.block.entity;
+package dev.sycraxe.burden.backpack;
 
-import dev.sycraxe.burden.AllBlockEntities;
-import dev.sycraxe.burden.AllItem;
-import dev.sycraxe.burden.gui.menu.BackpackMenu;
+import dev.sycraxe.burden.register.ModBlockEntities;
+import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -15,7 +14,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.IntStream;
 
@@ -25,7 +23,7 @@ public class BackpackBlockEntity extends BaseContainerBlockEntity implements Wor
     private NonNullList<ItemStack> items;
 
     public BackpackBlockEntity(BlockPos pos, BlockState blockState) {
-        super(AllBlockEntities.BACKPACK_BLOCK_ENTITY.get(), pos, blockState);
+        super(ModBlockEntities.BACKPACK_BLOCK_ENTITY.get(), pos, blockState);
         this.items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
     }
 
@@ -60,8 +58,8 @@ public class BackpackBlockEntity extends BaseContainerBlockEntity implements Wor
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
-        return !itemStack.is(AllItem.BACKPACK);
+    public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, Direction direction) {
+        return !itemStack.is(ModItem.BACKPACK);
     }
 
     @Override
