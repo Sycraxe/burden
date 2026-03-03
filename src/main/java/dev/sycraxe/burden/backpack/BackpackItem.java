@@ -14,6 +14,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.neoforged.fml.ModList;
 
 import java.util.Map;
 import java.util.Optional;
@@ -80,7 +81,7 @@ public class BackpackItem extends BlockItem implements Equipable {
 
     static {
         OPENING_MODES_TRIGGERER_SLOT_STACK_GETTER = Map.of(
-                BackpackItemOpeningMode.CURIOS, (inventory -> Burden.isCuriosCompatLoaded() ? Curios.getEquippedBackpack(inventory.player) : ItemStack.EMPTY),
+                BackpackItemOpeningMode.CURIOS, (inventory -> ModList.get().isLoaded("curios") ? Curios.getEquippedBackpack(inventory.player) : ItemStack.EMPTY),
                 BackpackItemOpeningMode.EQUIPPED, (inventory -> inventory.getItem(38)),
                 BackpackItemOpeningMode.MAIN_HAND, (inventory -> inventory.getItem(inventory.selected)),
                 BackpackItemOpeningMode.SECONDARY_HAND, (inventory -> inventory.getItem(Inventory.SLOT_OFFHAND))

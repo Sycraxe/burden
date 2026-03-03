@@ -38,19 +38,19 @@ public class ClientEventHandler {
             "key.categories.burden"
     ));
 
-    public static void registerBindings(RegisterKeyMappingsEvent event) {
+    private static void registerBindings(RegisterKeyMappingsEvent event) {
         event.register(BACKPACK_MAPPING.get());
     }
 
-    public static void registerScreens(RegisterMenuScreensEvent event) {
+    private static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuType.BACKPACK_MENU.get(), BackpackScreen::new);
     }
 
-    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(BackpackModel.LAYER_LOCATION, BackpackModel::createBodyLayer);
     }
 
-    public static void addPlayerLayers(EntityRenderersEvent.AddLayers event) {
+    private static void addPlayerLayers(EntityRenderersEvent.AddLayers event) {
         for (PlayerSkin.Model skin : event.getSkins()) {
             if (event.getSkin(skin) instanceof PlayerRenderer playerRenderer) {
                 playerRenderer.addLayer(new BackpackLayerRenderer(playerRenderer, event.getEntityModels()));
@@ -58,7 +58,7 @@ public class ClientEventHandler {
         }
     }
 
-    public static void onClientTick(ClientTickEvent.Post event) {
+    private static void onClientTick(ClientTickEvent.Post event) {
         while (BACKPACK_MAPPING.get().consumeClick()) {
             PacketDistributor.sendToServer(new BackpackOpeningData());
         }
