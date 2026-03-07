@@ -56,17 +56,17 @@ public class ModInventoryPriority {
             Map.of(ON_CLICK_ID, 20)
     );
 
-    private static InventoryPriorityContext registerContext(String id, InventoryPriorityContext context) {
+    public static InventoryPriorityContext registerContext(String id, InventoryPriorityContext context) {
         return registerContext(id, context, Map.of());
     }
 
-    private static InventoryPriorityContext registerContext(String id, InventoryPriorityContext context, Map<String, Integer> priorities) {
+    public static InventoryPriorityContext registerContext(String id, InventoryPriorityContext context, Map<String, Integer> priorities) {
         registerInventoryHandler(id, context, priorities);
         CONTEXTS.put(id, context);
         return context;
     }
 
-    private static InventoryHandler registerInventoryHandler(String id, InventoryHandler handler, Map<String, Integer> priorities) {
+    public static InventoryHandler registerInventoryHandler(String id, InventoryHandler handler, Map<String, Integer> priorities) {
         for (Map.Entry<String, Integer> entry : priorities.entrySet()) {
             InventoryPriorityContext context = CONTEXTS.get(entry.getKey());
             if (context == null) {

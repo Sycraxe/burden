@@ -1,6 +1,8 @@
 package dev.sycraxe.burden.compatibility.curios;
 
 import dev.sycraxe.burden.compatibility.Compatibility;
+import dev.sycraxe.burden.inventory.InventoryHandler;
+import dev.sycraxe.burden.register.ModInventoryPriority;
 import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +18,31 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
+import java.util.Map;
+import java.util.Optional;
+
 public class Curios implements Compatibility {
+    public static final String CURIOS_BACK_INVENTORY_ID = "curios_back_inventory";
+
+    public static final InventoryHandler CURIOS_BACK_INVENTORY = ModInventoryPriority.registerInventoryHandler(
+            CURIOS_BACK_INVENTORY_ID,
+            (player, condition) -> {
+                Optional<ICuriosItemHandler> maybeInventory = CuriosApi.getCuriosInventory(player);
+                if (maybeInventory.isEmpty()) return ItemStack.EMPTY;
+                ICuriosItemHandler inventory = maybeInventory.get();
+                Optional<ICurioStacksHandler> maybeStacksHandler = inventory.getStacksHandler("back");
+                if (maybeStacksHandler.isEmpty()) return ItemStack.EMPTY;
+                ICurioStacksHandler slotGroup = maybeStacksHandler.get();
+                IDynamicStackHandler stacks = slotGroup.getStacks();
+                for (int index = 0; index < stacks.getSlots(); index++) {
+                    ItemStack stack = stacks.getStackInSlot(index);
+                    if (condition.test(stack)) return stack;
+                }
+                return ItemStack.EMPTY;
+            },
+            Map.of(ModInventoryPriority.ON_KEYBIND_ID, 0)
+    );
+
     @Override
     public void register(IEventBus modBus) {
         modBus.addListener(Curios::registerCapabilities);
