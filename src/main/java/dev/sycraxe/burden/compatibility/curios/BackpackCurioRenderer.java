@@ -1,4 +1,4 @@
-package dev.sycraxe.burden.compat.curios;
+package dev.sycraxe.burden.compatibility.curios;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.sycraxe.burden.backpack.BackpackModel;

@@ -2,8 +2,7 @@ package dev.sycraxe.burden.backpack;
 
 import dev.sycraxe.burden.register.ModBlock;
 import dev.sycraxe.burden.register.ModItem;
-import dev.sycraxe.burden.Burden;
-import dev.sycraxe.burden.compat.curios.Curios;
+import dev.sycraxe.burden.compatibility.curios.Curios;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
