@@ -1,6 +1,6 @@
 package dev.sycraxe.burden.backpack;
 
-import dev.sycraxe.burden.register.ModBlockEntities;
+import dev.sycraxe.burden.register.ModBlockEntity;
 import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,7 +23,7 @@ public class BackpackBlockEntity extends BaseContainerBlockEntity implements Wor
     private NonNullList<ItemStack> items;
 
     public BackpackBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.BACKPACK_BLOCK_ENTITY.get(), pos, blockState);
+        super(ModBlockEntity.BACKPACK_BLOCK_ENTITY.get(), pos, blockState);
         this.items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
     }
 

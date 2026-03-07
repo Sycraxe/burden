@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.function.Supplier;
 
 public class CompatibilityRegistry {
-    private final HashMap<CompatibiltyData, Supplier<ICompatibility>> compats = new HashMap<>();
+    private final HashMap<CompatibiltyData, Supplier<Compatibility>> compats = new HashMap<>();
 
-    public void register(CompatibiltyData data, Supplier<ICompatibility> supplier) {
+    public void register(CompatibiltyData data, Supplier<Compatibility> supplier) {
         compats.put(data, supplier);
     }
 

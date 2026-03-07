@@ -1,6 +1,6 @@
 package dev.sycraxe.burden.compatibility.curios;
 
-import dev.sycraxe.burden.compatibility.ICompatibility;
+import dev.sycraxe.burden.compatibility.Compatibility;
 import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +16,7 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
-public class Curios implements ICompatibility {
+public class Curios implements Compatibility {
     @Override
     public void register(IEventBus modBus) {
         modBus.addListener(Curios::registerCapabilities);

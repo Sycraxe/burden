@@ -17,7 +17,7 @@ import java.util.function.Function;
 public class CommonEventHandler {
     public static void register(IEventBus modBus) {
         ModBlock.register(modBus);
-        ModBlockEntities.register(modBus);
+        ModBlockEntity.register(modBus);
         ModItem.register(modBus);
         ModMenuType.register(modBus);
         ModTab.register(modBus);

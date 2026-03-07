@@ -2,6 +2,6 @@ package dev.sycraxe.burden.compatibility;
 
 import net.neoforged.bus.api.IEventBus;
 
-public interface ICompatibility {
+public interface Compatibility {
     void register(IEventBus modBus);
 }
