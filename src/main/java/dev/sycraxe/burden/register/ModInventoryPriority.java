@@ -2,6 +2,7 @@ package dev.sycraxe.burden.register;
 
 import dev.sycraxe.burden.inventory.InventoryHandler;
 import dev.sycraxe.burden.inventory.InventoryPriorityContext;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
@@ -17,13 +18,43 @@ public class ModInventoryPriority {
     public static final String MAIN_HAND_INVENTORY_ID = "main_hand_inventory";
     public static final String OFFHAND_INVENTORY_ID = "offhand_inventory";
 
-    public static final InventoryPriorityContext ON_KEYBIND = registerContext(ON_KEYBIND_ID, new InventoryPriorityContext());
-    public static final InventoryPriorityContext ON_CLICK = registerContext(ON_KEYBIND_ID, new InventoryPriorityContext(), Map.of(ON_KEYBIND_ID, 20));
+    public static final InventoryPriorityContext ON_KEYBIND = registerContext(
+            ON_KEYBIND_ID,
+            new InventoryPriorityContext()
+    );
+    public static final InventoryPriorityContext ON_CLICK = registerContext(
+            ON_KEYBIND_ID,
+            new InventoryPriorityContext(),
+            Map.of(ON_KEYBIND_ID, 20)
+    );
 
-    public static final InventoryHandler CHEST_INVENTORY = registerInventoryHandler(CHEST_INVENTORY_ID, ((player, condition) -> ItemStack.EMPTY), Map.of(ON_KEYBIND_ID, 10));
+    public static final InventoryHandler CHEST_INVENTORY = registerInventoryHandler(
+            CHEST_INVENTORY_ID,
+            (player, condition) -> {
+                ItemStack stack = player.getInventory().armor.get(EquipmentSlot.CHEST.getIndex());
+                return condition.test(stack) ? stack : ItemStack.EMPTY;
+            },
+            Map.of(ON_KEYBIND_ID, 10)
+    );
 
-    public static final InventoryHandler MAIN_INVENTORY = registerInventoryHandler(MAIN_HAND_INVENTORY_ID, ((player, condition) -> ItemStack.EMPTY), Map.of(ON_CLICK_ID, 10));
-    public static final InventoryHandler OFFHAND_INVENTORY = registerInventoryHandler(OFFHAND_INVENTORY_ID, ((player, condition) -> ItemStack.EMPTY), Map.of(ON_CLICK_ID, 20));
+    public static final InventoryHandler MAIN_HAND_INVENTORY = registerInventoryHandler(
+            MAIN_HAND_INVENTORY_ID,
+            (player, condition) -> {
+                ItemStack stack = player.getInventory().getSelected();
+                return condition.test(stack) ? stack : ItemStack.EMPTY;
+            },
+            Map.of(ON_CLICK_ID, 10)
+    );
+    public static final InventoryHandler OFFHAND_INVENTORY = registerInventoryHandler(
+            OFFHAND_INVENTORY_ID,
+            (player, condition) -> {
+                for (ItemStack stack : player.getInventory().offhand) {
+                    if (condition.test(stack)) return stack;
+                }
+                return ItemStack.EMPTY;
+            },
+            Map.of(ON_CLICK_ID, 20)
+    );
 
     private static InventoryPriorityContext registerContext(String id, InventoryPriorityContext context) {
         return registerContext(id, context, Map.of());
