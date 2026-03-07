@@ -2,7 +2,7 @@ package dev.sycraxe.burden.compatibility.curios;
 
 import dev.sycraxe.burden.compatibility.Compatibility;
 import dev.sycraxe.burden.inventory.InventoryHandler;
-import dev.sycraxe.burden.register.ModInventoryPriority;
+import dev.sycraxe.burden.register.ModInventoryHandler;
 import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,25 +22,23 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Curios implements Compatibility {
-    public static final String CURIOS_BACK_INVENTORY_ID = "curios_back_inventory";
 
-    public static final InventoryHandler CURIOS_BACK_INVENTORY = ModInventoryPriority.registerInventoryHandler(
-            CURIOS_BACK_INVENTORY_ID,
-            (player, condition) -> {
-                Optional<ICuriosItemHandler> maybeInventory = CuriosApi.getCuriosInventory(player);
-                if (maybeInventory.isEmpty()) return ItemStack.EMPTY;
-                ICuriosItemHandler inventory = maybeInventory.get();
-                Optional<ICurioStacksHandler> maybeStacksHandler = inventory.getStacksHandler("back");
-                if (maybeStacksHandler.isEmpty()) return ItemStack.EMPTY;
-                ICurioStacksHandler slotGroup = maybeStacksHandler.get();
-                IDynamicStackHandler stacks = slotGroup.getStacks();
-                for (int index = 0; index < stacks.getSlots(); index++) {
-                    ItemStack stack = stacks.getStackInSlot(index);
-                    if (condition.test(stack)) return stack;
-                }
-                return ItemStack.EMPTY;
-            },
-            Map.of(ModInventoryPriority.ON_KEYBIND_ID, 0)
+    public static final InventoryHandler CURIOS_BACK_INVENTORY = ModInventoryHandler.registerInventoryHandler(
+            new InventoryHandler(
+                    (player, slot) -> {
+                        Optional<IDynamicStackHandler> maybeStackHandler = getStackHandler(player);
+                        if (maybeStackHandler.isEmpty()) return ItemStack.EMPTY;
+                        IDynamicStackHandler stackHandler = maybeStackHandler.get();
+                        if (slot >= stackHandler.getSlots()) return ItemStack.EMPTY;
+                        return stackHandler.getStackInSlot(slot);
+                    },
+                    player -> {
+                        Optional<IDynamicStackHandler> maybeStackHandler = getStackHandler(player);
+                        if (maybeStackHandler.isEmpty()) return 0;
+                        return maybeStackHandler.get().getSlots();
+                    }
+            ),
+            Map.of(ModInventoryHandler.ON_KEYBIND_ID, 0)
     );
 
     @Override
@@ -68,6 +66,15 @@ public class Curios implements Compatibility {
 
     private static void clientSetup(final FMLClientSetupEvent evt) {
         CuriosRendererRegistry.register(ModItem.BACKPACK.get(), BackpackCurioRenderer::new);
+    }
+
+    private static Optional<IDynamicStackHandler> getStackHandler(Player player) {
+        Optional<ICuriosItemHandler> maybeInventory = CuriosApi.getCuriosInventory(player);
+        if (maybeInventory.isEmpty()) return Optional.empty();
+        ICuriosItemHandler inventory = maybeInventory.get();
+        Optional<ICurioStacksHandler> maybeStacksHandler = inventory.getStacksHandler("back");
+        if (maybeStacksHandler.isEmpty()) return Optional.empty();
+        return Optional.of(maybeStacksHandler.get().getStacks());
     }
 
     public static ItemStack getEquippedBackpack(Player player) {
