@@ -22,8 +22,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Curios implements Compatibility {
+    public static final String CURIOS_BACK_INVENTORY_ID = "curios_back";
 
     public static final InventoryHandler CURIOS_BACK_INVENTORY = ModInventoryHandler.registerInventoryHandler(
+            CURIOS_BACK_INVENTORY_ID,
             new InventoryHandler(
                     (player, slot) -> {
                         Optional<IDynamicStackHandler> maybeStackHandler = getStackHandler(player);
@@ -75,24 +77,5 @@ public class Curios implements Compatibility {
         Optional<ICurioStacksHandler> maybeStacksHandler = inventory.getStacksHandler("back");
         if (maybeStacksHandler.isEmpty()) return Optional.empty();
         return Optional.of(maybeStacksHandler.get().getStacks());
-    }
-
-    public static ItemStack getEquippedBackpack(Player player) {
-        if (CuriosApi.getCuriosInventory(player).isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-        ICuriosItemHandler inventory = CuriosApi.getCuriosInventory(player).get();
-        if (inventory.getStacksHandler("back").isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-        ICurioStacksHandler slot = inventory.getStacksHandler("back").get();
-        IDynamicStackHandler stacks = slot.getStacks();
-        for (int i = 0; i < stacks.getSlots(); i++) {
-            ItemStack stack = stacks.getStackInSlot(i);
-            if (stack.is(ModItem.BACKPACK)) {
-                return stack;
-            }
-        }
-        return ItemStack.EMPTY;
     }
 }

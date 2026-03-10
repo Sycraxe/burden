@@ -31,6 +31,4 @@ public class InventoryHandlerResolver {
             return Integer.compare(this.priority, other.priority());
         }
     }
-
-    public record InventoryHandlerSlot(InventoryHandler handler, int slot) {}
 }

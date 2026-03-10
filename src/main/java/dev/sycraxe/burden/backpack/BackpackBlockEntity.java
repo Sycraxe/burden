@@ -49,7 +49,7 @@ public class BackpackBlockEntity extends BaseContainerBlockEntity implements Wor
 
     @Override
     protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
-        return new BackpackMenu(i, inventory, this);
+        return new BackpackMenu(i, inventory, new BackpackContext.Block(this.getBlockPos()));
     }
 
     @Override

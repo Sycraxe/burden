@@ -1,11 +1,13 @@
 package dev.sycraxe.burden.backpack;
 
 import com.mojang.datafixers.util.Pair;
+import dev.sycraxe.burden.inventory.InventoryHandlerSlot;
+import dev.sycraxe.burden.register.ModInventoryHandler;
 import dev.sycraxe.burden.register.ModItem;
 import dev.sycraxe.burden.register.ModMenuType;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,24 +21,39 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Map;
-import java.util.Optional;
+import java.util.OptionalInt;
 
 public class BackpackMenu extends AbstractContainerMenu {
     private static final EquipmentSlot[] EQUIPMENT_SLOTS;
     private static final Map<EquipmentSlot, ResourceLocation> TEXTURE_EMPTY_SLOTS;
     private final Container container;
 
-    public BackpackMenu(int id, Inventory inventory) {
-        this(id, inventory, new SimpleContainer(BackpackItemContainer.DEFAULT_SIZE));
+    public BackpackMenu(int id, Inventory inventory, FriendlyByteBuf buffer) {
+        this(id, inventory, BackpackContext.fromBuffer(buffer));
     }
 
-    public BackpackMenu(int id, Inventory inventory, Container container) {
-        this(id, inventory, container, Optional.empty());
-    }
-
-    public BackpackMenu(int id, Inventory inventory, Container container, Optional<Integer> unpickableSlot) {
+    public BackpackMenu(int id, Inventory inventory, BackpackContext context) {
         super(ModMenuType.BACKPACK_MENU.get(), id);
-        this.container = container;
+
+        OptionalInt unpickableSlot = OptionalInt.empty();
+        switch (context.getType()) {
+            case ITEM_BACKPACK -> {
+                InventoryHandlerSlot handlerSlot = ((BackpackContext.Item) context).getHandlerSlot();
+                ItemStack stack = handlerSlot.handler().get(inventory.player, handlerSlot.index());
+                this.container = new BackpackItemContainer(stack, () -> handlerSlot.handler().get(inventory.player, handlerSlot.index()));
+                if (handlerSlot.handler().equals(ModInventoryHandler.MAIN_HAND_INVENTORY)) unpickableSlot = OptionalInt.of(inventory.selected);
+                if (handlerSlot.handler().equals(ModInventoryHandler.OFFHAND_INVENTORY)) unpickableSlot = OptionalInt.of(Inventory.SLOT_OFFHAND);
+                if (handlerSlot.handler().equals(ModInventoryHandler.CHEST_INVENTORY)) unpickableSlot = OptionalInt.of(38);
+            }
+            case BLOCK_BACKPACK -> {
+                BackpackBlockEntity backpackBlockEntity = (BackpackBlockEntity) inventory.player.level().getBlockEntity(((BackpackContext.Block) context).getBackpackPosition());
+                this.container = backpackBlockEntity;
+            }
+            case null, default -> {
+                this.container = null;
+                return;
+            }
+        }
 
         for (int i1 = 0; i1 < 3; i1++) {
             for (int j1 = 0; j1 < 9; j1++) {
@@ -62,9 +79,9 @@ public class BackpackMenu extends AbstractContainerMenu {
         }
     }
 
-    private void addHotbarSlots(Inventory inventory, Optional<Integer> unpickableSlot) {
+    private void addHotbarSlots(Inventory inventory, OptionalInt unpickableSlot) {
         for (int slotCount = 0; slotCount < 9; slotCount++) {
-            this.addSlot(unpickableSlot.isPresent() && unpickableSlot.get() == slotCount
+            this.addSlot(unpickableSlot.isPresent() && unpickableSlot.getAsInt() == slotCount
                 ? new Slot(inventory, slotCount, slotCount * 18 + 44, 161) {
                     @Override
                     public boolean mayPickup(Player player) {
@@ -76,8 +93,8 @@ public class BackpackMenu extends AbstractContainerMenu {
         }
     }
 
-    private void addArmorAndOffhandSlots(Inventory inventory, Optional<Integer> unpickableSlot) {
-        this.addSlot(unpickableSlot.isPresent() && unpickableSlot.get() == Inventory.SLOT_OFFHAND
+    private void addArmorAndOffhandSlots(Inventory inventory, OptionalInt unpickableSlot) {
+        this.addSlot(unpickableSlot.isPresent() && unpickableSlot.getAsInt() == Inventory.SLOT_OFFHAND
             ? new ArmorSlot(inventory, inventory.player, EQUIPMENT_SLOTS[4], Inventory.SLOT_OFFHAND, 224, 161, TEXTURE_EMPTY_SLOTS.get(EQUIPMENT_SLOTS[4])) {
                 @Override
                 public boolean mayPickup(Player player) {
@@ -88,7 +105,7 @@ public class BackpackMenu extends AbstractContainerMenu {
         );
 
         for (int slotCount = 0; slotCount < 4; slotCount++) {
-            this.addSlot(unpickableSlot.isPresent() && unpickableSlot.get() == 39 - slotCount
+            this.addSlot(unpickableSlot.isPresent() && unpickableSlot.getAsInt() == 39 - slotCount
                 ? new ArmorSlot(inventory, inventory.player, EQUIPMENT_SLOTS[slotCount], 39 - slotCount, 224, slotCount * 18 + 85, TEXTURE_EMPTY_SLOTS.get(EQUIPMENT_SLOTS[slotCount])) {
                     @Override
                     public boolean mayPickup(Player player) {
@@ -138,10 +155,10 @@ public class BackpackMenu extends AbstractContainerMenu {
 
     private void doSwapClick(int slotId, int button, Player player) {
         if (button >= 0 && button < 9 || button == 40) {
-            // Source slot
+            // Source index
             Slot slot1 = this.slots.get(slotId);
             ItemStack stack1 = slot1.getItem().copy();
-            // Destination slot
+            // Destination index
             Slot slot2;
             if (button < 9) {
                 slot2 = this.slots.get(54 + button);

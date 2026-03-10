@@ -1,10 +1,13 @@
 package dev.sycraxe.burden.backpack;
 
 import com.mojang.serialization.MapCodec;
+import dev.sycraxe.burden.inventory.InventoryHandlerSlot;
+import dev.sycraxe.burden.register.ModInventoryHandler;
 import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +25,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.Optional;
 
 public class BackpackBlock extends BaseEntityBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(4, 0, 6, 12, 8, 10);
@@ -73,7 +78,8 @@ public class BackpackBlock extends BaseEntityBlock {
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
             }
-            player.openMenu(backpackBlockEntity, pos);
+            BackpackContext context = new BackpackContext.Block(pos);
+            player.openMenu(new SimpleMenuProvider((id, inventory, p) -> new BackpackMenu(id, inventory, context), backpackBlockEntity.getDisplayName()), context::toBuffer);
             return InteractionResult.CONSUME;
         }
         return InteractionResult.PASS;
