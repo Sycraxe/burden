@@ -1,5 +1,6 @@
 package dev.sycraxe.burden.event;
 
+import dev.sycraxe.burden.backpack.BackpackBlockEntity;
 import dev.sycraxe.burden.backpack.BackpackContext;
 import dev.sycraxe.burden.backpack.BackpackMenu;
 import dev.sycraxe.burden.inventory.InventoryHandlerSlot;

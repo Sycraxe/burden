@@ -1,11 +1,16 @@
 package dev.sycraxe.burden.backpack;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.sycraxe.burden.Burden;
+import dev.sycraxe.burden.event.ClientEventHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.time.chrono.MinguoEra;
 
 public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
     private static final ResourceLocation BACKPACK =
@@ -39,5 +44,14 @@ public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 13942436, false);
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 4210752, false);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scancode, int mods) {
+        if (ClientEventHandler.BACKPACK_MAPPING.get().isActiveAndMatches(InputConstants.getKey(key, scancode))) {
+            Minecraft.getInstance().setScreen(null);
+            return true;
+        }
+        return super.keyPressed(key, scancode, mods);
     }
 }
