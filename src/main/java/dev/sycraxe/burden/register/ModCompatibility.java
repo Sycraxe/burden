@@ -9,7 +9,7 @@ public class ModCompatibility {
     public static final CompatibilityRegistry COMPAT_REGISTRY = new CompatibilityRegistry();
 
     public static void register(IEventBus bus) {
-        COMPAT_REGISTRY.register(new CompatibiltyData("curios"), Curios::new);
+        COMPAT_REGISTRY.register(new CompatibiltyData("curios"), () -> new Curios());
         COMPAT_REGISTRY.register(bus);
     }
 }
