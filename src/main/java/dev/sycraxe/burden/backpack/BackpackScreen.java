@@ -10,8 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.time.chrono.MinguoEra;
-
 public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
     private static final ResourceLocation BACKPACK =
             ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/gui/container/backpack.png");

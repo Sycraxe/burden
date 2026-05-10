@@ -4,8 +4,6 @@ import dev.sycraxe.burden.inventory.InventoryHandlerSlot;
 import dev.sycraxe.burden.register.ModBlock;
 import dev.sycraxe.burden.register.ModInventoryHandler;
 import dev.sycraxe.burden.register.ModItem;
-import dev.sycraxe.burden.compatibility.curios.Curios;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class BackpackItem extends BlockItem implements Equipable {
-
     public BackpackItem() {
         super(ModBlock.BACKPACK.get(), new Properties().stacksTo(1));
     }

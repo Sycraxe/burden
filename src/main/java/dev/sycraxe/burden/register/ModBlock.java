@@ -8,7 +8,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-
 public class ModBlock {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Burden.MOD_ID);
 
