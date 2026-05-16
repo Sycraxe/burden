@@ -36,18 +36,18 @@ public class BackpackModel extends EntityModel<AbstractClientPlayer> {
 				"backpack",
 				CubeListBuilder.create()
 						.texOffs(0, 18)
-						.addBox(-4.0F, -3.0F, -2.0F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
+						.addBox(-4.0F, -3.0F, -1.5F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
 
-						.texOffs(0, 0)
-						.addBox(-0.998F, 3.0F, -2.0F, 5.0F, 4.0F, 6.0F, new CubeDeformation(0.0F))
+						.texOffs(1, 1)
+						.addBox(-0.998F, 3.0F, -1.5F, 5.0F, 4.0F, 5.0F, new CubeDeformation(0.0F))
 
-						.texOffs(0, 0)
+						.texOffs(1, 1)
 						.mirror()
-						.addBox(-4.002F, 3.0F, -2.0F, 5.0F, 4.0F, 6.0F, new CubeDeformation(0.0F))
+						.addBox(-4.002F, 3.0F, -1.5F, 5.0F, 4.0F, 5.0F, new CubeDeformation(0.0F))
 						.mirror(false)
 
 						.texOffs(0, 28)
-						.addBox(-4.0F, -1.0F, -0.5F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)),
+						.addBox(-4.0F, -1.0F, 0.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)),
 				PartPose.offset(0.0F, 17.0F, -1.0F)
 		);
 
@@ -56,11 +56,11 @@ public class BackpackModel extends EntityModel<AbstractClientPlayer> {
 				CubeListBuilder.create()
 						.texOffs(0, 10)
 						.mirror()
-						.addBox(-4.001F, -2.77F, 0.15F, 5.0F, 7.0F, 1.0F, new CubeDeformation(0.0F))
+						.addBox(-4.001F, -2.58F, 0.6F, 5.0F, 7.0F, 1.0F, new CubeDeformation(0.0F))
 						.mirror(false)
 
 						.texOffs(0, 10)
-						.addBox(-0.999F, -2.77F, 0.15F, 5.0F, 7.0F, 1.0F, new CubeDeformation(0.0F)),
+						.addBox(-0.999F, -2.58F, 0.6F, 5.0F, 7.0F, 1.0F, new CubeDeformation(0.0F)),
 				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.3927F, 0.0F, 0.0F)
 		);
 
@@ -76,11 +76,11 @@ public class BackpackModel extends EntityModel<AbstractClientPlayer> {
 		if (player.isCrouching()) {
 			this.backpack.xRot = 0.5F;
 			this.backpack.y = 4.0F;
-			this.backpack.z = 5.0F;
+			this.backpack.z = 4.5F;
 		} else {
 			this.backpack.xRot = 0.0F;
 			this.backpack.y = 3.0F;
-			this.backpack.z = 4.0F;
+			this.backpack.z = 3.5F;
 		}
 	}
 

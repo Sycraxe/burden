@@ -25,8 +25,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BackpackBlock extends BaseEntityBlock {
-    public static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(4, 0, 5, 12, 10, 11);
-    public static final VoxelShape WEST_EAST_SHAPE = Block.box(5, 0, 4, 11, 10, 12);
+    public static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(4, 0, 5.5, 12, 10, 10.5);
+    public static final VoxelShape WEST_EAST_SHAPE = Block.box(5.5, 0, 4, 10.5, 10, 12);
     public static final MapCodec<BackpackBlock> CODEC = simpleCodec(BackpackBlock::new);
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
