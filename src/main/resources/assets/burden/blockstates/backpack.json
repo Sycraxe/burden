@@ -1,19 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "burden:item/backpack",
-      "y": 180
+      "model": "burden:item/backpack"
     },
     "facing=east": {
       "model": "burden:item/backpack",
-      "y": 270
+      "y": 90
     },
     "facing=south": {
-      "model": "burden:item/backpack"
+      "model": "burden:item/backpack",
+      "y": 180
     },
     "facing=west": {
       "model": "burden:item/backpack",
-      "y": 90
+      "y": 270
     }
   }
 }

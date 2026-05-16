@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BackpackModel extends EntityModel<AbstractClientPlayer> {
 	private static final ResourceLocation BACKPACK_ENTITY_TEXTURE =
-			ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/model/backpack.png");
+			ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/item/backpack.png");
 	public static final ModelLayerLocation LAYER_LOCATION =
 			new ModelLayerLocation(
 					ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "backpack"),
@@ -32,17 +32,36 @@ public class BackpackModel extends EntityModel<AbstractClientPlayer> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild(
+		PartDefinition main = partdefinition.addOrReplaceChild(
 				"backpack",
-				CubeListBuilder
-						.create()
+				CubeListBuilder.create()
+						.texOffs(0, 18)
+						.addBox(-4.0F, -3.0F, -2.0F, 8.0F, 6.0F, 4.0F, new CubeDeformation(0.0F))
+
 						.texOffs(0, 0)
-						.addBox(
-								0.0F, 0.0F, 0.0F,
-								8.0F, 8.0F, 4.0F,
-								new CubeDeformation(0.0F)
-						),
-				PartPose.offset(-4.0F, 0.0F, 2.0F)
+						.addBox(-0.998F, 3.0F, -2.0F, 5.0F, 4.0F, 6.0F, new CubeDeformation(0.0F))
+
+						.texOffs(0, 0)
+						.mirror()
+						.addBox(-4.002F, 3.0F, -2.0F, 5.0F, 4.0F, 6.0F, new CubeDeformation(0.0F))
+						.mirror(false)
+
+						.texOffs(0, 28)
+						.addBox(-4.0F, -1.0F, -0.5F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)),
+				PartPose.offset(0.0F, 17.0F, -1.0F)
+		);
+
+		PartDefinition slope = main.addOrReplaceChild(
+				"slope",
+				CubeListBuilder.create()
+						.texOffs(0, 10)
+						.mirror()
+						.addBox(-4.001F, -2.77F, 0.15F, 5.0F, 7.0F, 1.0F, new CubeDeformation(0.0F))
+						.mirror(false)
+
+						.texOffs(0, 10)
+						.addBox(-0.999F, -2.77F, 0.15F, 5.0F, 7.0F, 1.0F, new CubeDeformation(0.0F)),
+				PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.3927F, 0.0F, 0.0F)
 		);
 
 		return LayerDefinition.create(meshdefinition, 32, 32);
@@ -56,10 +75,12 @@ public class BackpackModel extends EntityModel<AbstractClientPlayer> {
 	public void setup(AbstractClientPlayer player) {
 		if (player.isCrouching()) {
 			this.backpack.xRot = 0.5F;
-			this.backpack.y = 3.2F;
+			this.backpack.y = 4.0F;
+			this.backpack.z = 5.0F;
 		} else {
 			this.backpack.xRot = 0.0F;
-			this.backpack.y = 0.0F;
+			this.backpack.y = 3.0F;
+			this.backpack.z = 4.0F;
 		}
 	}
 
@@ -69,7 +90,7 @@ public class BackpackModel extends EntityModel<AbstractClientPlayer> {
 	}
 
 	public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(BACKPACK_ENTITY_TEXTURE));
+		VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityCutout(BACKPACK_ENTITY_TEXTURE));
 		this.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 	}
 

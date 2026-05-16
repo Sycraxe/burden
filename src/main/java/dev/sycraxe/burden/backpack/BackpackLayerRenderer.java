@@ -18,7 +18,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class BackpackLayerRenderer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
     private static final ResourceLocation BACKPACK_LOCATION =
-            ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/model/backpack.png");
+            ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/item/backpack.png");
     private final BackpackModel model;
 
     public BackpackLayerRenderer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer, EntityModelSet modelSet) {
@@ -42,7 +42,7 @@ public class BackpackLayerRenderer extends RenderLayer<AbstractClientPlayer, Pla
             this.model.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             this.model.renderToBuffer(
                     poseStack,
-                    buffer.getBuffer(RenderType.entitySolid(BACKPACK_LOCATION)),
+                    buffer.getBuffer(RenderType.entityCutout(BACKPACK_LOCATION)),
                     packedLight,
                     LivingEntityRenderer.getOverlayCoords(livingEntity, 0.0F)
             );
