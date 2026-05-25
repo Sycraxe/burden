@@ -1,9 +1,16 @@
 {
   "tab.burden": "Burden",
+
   "block.burden.backpack": "Backpack",
+
   "item.burden.fabric": "Fabric",
   "item.burden.straw": "Straw",
+  "item.burden.iron_scythe": "Iron Scythe",
+  "item.burden.golden_scythe": "Golden Scythe",
+  "item.burden.netherite_scythe": "Netherite Scythe",
+
   "key.categories.burden": "Burden",
+
   "key.burden.backpack": "Open backpack",
   "key.burden.details": "Show description"
 }

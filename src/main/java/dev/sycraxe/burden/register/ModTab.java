@@ -18,6 +18,9 @@ public class ModTab {
                 output.accept(ModItem.BACKPACK);
                 output.accept(ModItem.FABRIC);
                 output.accept(ModItem.STRAW);
+                output.accept(ModItem.IRON_SCYTHE);
+                output.accept(ModItem.GOLDEN_SCYTHE);
+                output.accept(ModItem.NETHERITE_SCYTHE);
             }).build());
 
     public static void register(IEventBus bus) {
