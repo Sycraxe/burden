@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#burden:tools/scythes"
+    "burden:iron_scythe",
+    "burden:golden_scythe",
+    "burden:netherite_scythe"
   ]
 }
