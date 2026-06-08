@@ -40,14 +40,14 @@ public class BackpackMenu extends AbstractContainerMenu {
             case ITEM_BACKPACK -> {
                 InventoryHandlerSlot handlerSlot = ((BackpackContext.Item) context).getHandlerSlot();
                 ItemStack stack = handlerSlot.handler().get(inventory.player, handlerSlot.index());
+
                 this.container = new BackpackItemContainer(stack, () -> handlerSlot.handler().get(inventory.player, handlerSlot.index()));
                 if (handlerSlot.handler().equals(ModInventoryHandler.MAIN_HAND_INVENTORY)) unpickableSlot = OptionalInt.of(inventory.selected);
                 if (handlerSlot.handler().equals(ModInventoryHandler.OFFHAND_INVENTORY)) unpickableSlot = OptionalInt.of(Inventory.SLOT_OFFHAND);
                 if (handlerSlot.handler().equals(ModInventoryHandler.CHEST_INVENTORY)) unpickableSlot = OptionalInt.of(38);
             }
             case BLOCK_BACKPACK -> {
-                BackpackBlockEntity backpackBlockEntity = (BackpackBlockEntity) inventory.player.level().getBlockEntity(((BackpackContext.Block) context).getBackpackPosition());
-                this.container = backpackBlockEntity;
+                this.container = (BackpackBlockEntity) inventory.player.level().getBlockEntity(((BackpackContext.Block) context).getBackpackPosition());
             }
             case null, default -> {
                 this.container = null;
@@ -235,7 +235,7 @@ public class BackpackMenu extends AbstractContainerMenu {
         }
 
         public boolean mayPlace(ItemStack stack) {
-            return stack.canEquip(this.slot, this.owner);
+            return stack.canEquip(this.slot, this.owner) || this.slot == EquipmentSlot.OFFHAND;
         }
 
         public boolean mayPickup(Player player) {
