@@ -25,6 +25,7 @@ public class ClientEventHandler {
         modBus.addListener(ClientEventHandler::registerScreens);
         modBus.addListener(ClientEventHandler::registerLayerDefinitions);
         modBus.addListener(ClientEventHandler::addPlayerLayers);
+
         IEventBus eventBus = NeoForge.EVENT_BUS;
         eventBus.addListener(ClientEventHandler::onClientTick);
     }

@@ -22,7 +22,6 @@ public class CommonEventHandler {
         ModMenuType.register(modBus);
         ModTab.register(modBus);
         ModCompatibility.register(modBus);
-        ModLootModifier.register(modBus);
         modBus.addListener(CommonEventHandler::registerPayloads);
     }
 
@@ -41,5 +40,5 @@ public class CommonEventHandler {
                 }
             }
         );
-    };
+    }
 }
