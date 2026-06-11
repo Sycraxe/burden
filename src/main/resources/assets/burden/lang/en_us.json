@@ -1,13 +1,6 @@
 {
   "tab.burden": "Burden",
-
   "block.burden.backpack": "Backpack",
-
-  "item.burden.fabric": "Fabric",
-  "item.burden.straw": "Straw",
-
   "key.categories.burden": "Burden",
-
-  "key.burden.backpack": "Open backpack",
-  "key.burden.details": "Show description"
+  "key.burden.backpack": "Open backpack"
 }

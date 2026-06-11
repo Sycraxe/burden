@@ -12,9 +12,6 @@ public class ModItem {
 
     public static final DeferredItem<Item> BACKPACK = ITEMS.register("backpack", BackpackItem::new);
 
-    public static final DeferredItem<Item> FABRIC = ITEMS.register("fabric", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> STRAW = ITEMS.register("straw", () -> new Item(new Item.Properties()));
-
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
     }

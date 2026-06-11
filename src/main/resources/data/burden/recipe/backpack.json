@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "F": {
-      "item": "burden:fabric"
+    "W": {
+      "tag": "minecraft:wool"
     },
     "S": {
       "item": "minecraft:string"
@@ -15,9 +15,9 @@
     }
   },
   "pattern": [
-    "FSF",
-    "FCF",
-    "LSL"
+    "SLS",
+    "WCW",
+    "SLS"
   ],
   "result": {
     "count": 1,

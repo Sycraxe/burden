@@ -14,11 +14,8 @@ public class ModTab {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BURDEN_TAB = TABS.register("burden_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("tab.burden"))
             .icon(() -> ModItem.BACKPACK.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(ModItem.BACKPACK);
-                output.accept(ModItem.FABRIC);
-                output.accept(ModItem.STRAW);
-            }).build());
+            .displayItems((parameters, output) -> output.accept(ModItem.BACKPACK)).build()
+    );
 
     public static void register(IEventBus bus) {
         TABS.register(bus);
