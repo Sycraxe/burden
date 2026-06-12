@@ -42,6 +42,11 @@ public class BackpackItem extends BlockItem implements Equipable {
     }
 
     @Override
+    public boolean canFitInsideContainerItems() {
+        return false;
+    }
+
+    @Override
     public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.CHEST;
     }

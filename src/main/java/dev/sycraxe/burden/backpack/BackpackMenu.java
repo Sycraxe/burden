@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -60,7 +61,7 @@ public class BackpackMenu extends AbstractContainerMenu {
                 this.addSlot(new Slot(this.container, j1 + i1 * 9, j1 * 18 + 44, i1 * 18 + 23) {
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        return !stack.is(ModItem.BACKPACK);
+                        return stack.getItem().canFitInsideContainerItems();
                     }
                 });
             }
