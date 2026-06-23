@@ -8,11 +8,13 @@ import dev.sycraxe.burden.network.BackpackOpeningData;
 import dev.sycraxe.burden.recipe.BurdenRecipeProvider;
 import dev.sycraxe.burden.register.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -29,9 +31,9 @@ public class CommonEventHandler {
         ModMenuType.register(modBus);
         ModTab.register(modBus);
         ModCompatibility.register(modBus);
-        ModRecipeSerializer.register(modBus);
         modBus.addListener(CommonEventHandler::registerPayloads);
         modBus.addListener(CommonEventHandler::gatherData);
+        modBus.addListener(CommonEventHandler::commonSetup);
     }
 
     private static void registerPayloads(final RegisterPayloadHandlersEvent event) {
@@ -60,5 +62,11 @@ public class CommonEventHandler {
                 event.includeServer(),
                 new BurdenRecipeProvider(output, lookupProvider)
         );
+    }
+
+    private static void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            CauldronInteraction.WATER.map().put(ModItem.BACKPACK.get(), CauldronInteraction.DYED_ITEM);
+        });
     }
 }

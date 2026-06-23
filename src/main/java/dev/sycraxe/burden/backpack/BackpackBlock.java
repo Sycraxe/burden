@@ -27,6 +27,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.OptionalInt;
+
 public class BackpackBlock extends BaseEntityBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(4, 0, 5.5, 12, 10, 10.5);
     public static final VoxelShape WEST_EAST_SHAPE = Block.box(5.5, 0, 4, 10.5, 10, 12);
@@ -111,7 +113,7 @@ public class BackpackBlock extends BaseEntityBlock {
         if (be instanceof BackpackBlockEntity backpackBlockEntity) {
             if (stack.has(DataComponents.DYED_COLOR)) {
                 DyedItemColor color = stack.get(DataComponents.DYED_COLOR);
-                backpackBlockEntity.setColor(color != null ? color.rgb() : DyeColor.WHITE.getTextureDiffuseColor());
+                backpackBlockEntity.setColor(color != null ? OptionalInt.of(color.rgb()) : OptionalInt.empty());
             }
         }
     }

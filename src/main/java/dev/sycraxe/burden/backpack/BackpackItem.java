@@ -4,6 +4,8 @@ import dev.sycraxe.burden.inventory.InventoryHandlerSlot;
 import dev.sycraxe.burden.register.ModBlock;
 import dev.sycraxe.burden.register.ModInventoryHandler;
 import dev.sycraxe.burden.register.ModItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,6 +16,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
@@ -23,8 +27,19 @@ public class BackpackItem extends BlockItem implements Equipable {
     }
 
     public InteractionResult useOn(UseOnContext context) {
-        if (context.getPlayer().isCrouching()) {
+        Player player = context.getPlayer();
+        if (player.isCrouching()) {
             this.place(new BlockPlaceContext(context));
+            return InteractionResult.SUCCESS;
+        }
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        BlockState state = level.getBlockState(pos);
+        if (state.is(Blocks.WATER_CAULDRON)) {
+            CauldronInteraction interaction = CauldronInteraction.WATER.map().get(this);
+            if (interaction != null) {
+                return interaction.interact(state, level, pos, player, context.getHand(), context.getItemInHand()).result();
+            }
         }
         return InteractionResult.PASS;
     }
@@ -50,4 +65,6 @@ public class BackpackItem extends BlockItem implements Equipable {
     public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.CHEST;
     }
+
+
 }

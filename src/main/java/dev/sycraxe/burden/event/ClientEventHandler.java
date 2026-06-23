@@ -83,11 +83,14 @@ public class ClientEventHandler {
     public static void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
         event.register(
                 (state, level, pos, tintIndex) -> {
-                    if (level == null) return DyeColor.WHITE.getTextureDiffuseColor();
-                    if (pos == null) return DyeColor.WHITE.getTextureDiffuseColor();
+                    if (level == null || pos == null) {
+                        return BackpackBlockEntity.getDefaultColor();
+                    }
                     BlockEntity be = level.getBlockEntity(pos);
-                    if (!(be instanceof BackpackBlockEntity)) return DyeColor.WHITE.getTextureDiffuseColor();
-                    return ((BackpackBlockEntity) be).getColor();
+                    if (!(be instanceof BackpackBlockEntity)) {
+                        return BackpackBlockEntity.getDefaultColor();
+                    }
+                    return ((BackpackBlockEntity) be).getRenderingColor();
                 },
                 ModBlock.BACKPACK.value()
         );

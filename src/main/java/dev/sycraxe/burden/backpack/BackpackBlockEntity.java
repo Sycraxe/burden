@@ -19,31 +19,36 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 public class BackpackBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
     public static final int CONTAINER_SIZE = 27;
     private static final int[] SLOTS = IntStream.range(0, CONTAINER_SIZE).toArray();
+
     private NonNullList<ItemStack> items;
-    private int color;
+    private OptionalInt color;
 
     public BackpackBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntity.BACKPACK_BLOCK_ENTITY.get(), pos, blockState);
         this.items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
-        this.color = DyeColor.WHITE.getTextureDiffuseColor();
+        this.color = OptionalInt.empty();
     }
 
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.items.clear();
         ContainerHelper.loadAllItems(tag, this.items, registries);
-        this.color = tag.contains("Color") ? tag.getInt("Color") : DyeColor.WHITE.getTextureDiffuseColor();
+        if (tag.contains("Color")) {
+            this.color = OptionalInt.of(tag.getInt("Color"));
+        }
     }
 
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, this.items, registries);
-        tag.putInt("Color", this.color);
+        if (this.color.isPresent()) {
+            tag.putInt("Color", this.color.getAsInt());
+        }
     }
 
     @Override
@@ -103,11 +108,15 @@ public class BackpackBlockEntity extends BaseContainerBlockEntity implements Wor
         return CONTAINER_SIZE;
     }
 
-    public int getColor() {
-        return this.color;
+    public int getRenderingColor() {
+        return this.color.isPresent() ? this.color.getAsInt() : getDefaultColor();
     }
 
-    public void setColor(int color) {
+    public static int getDefaultColor() {
+        return DyeColor.WHITE.getTextureDiffuseColor();
+    }
+
+    public void setColor(OptionalInt color) {
         this.color = color;
         setChanged();
     }

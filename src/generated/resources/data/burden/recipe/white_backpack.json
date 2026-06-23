@@ -1,17 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
-    "W": {
-      "item": "minecraft:yellow_wool"
-    },
-    "S": {
-      "item": "minecraft:string"
-    },
     "C": {
       "item": "minecraft:chest"
     },
     "L": {
       "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "W": {
+      "item": "minecraft:white_wool"
     }
   },
   "pattern": [
@@ -20,12 +21,6 @@
     "SLS"
   ],
   "result": {
-    "components": {
-      "minecraft:dyed_color": {
-        "rgb": 16701501,
-        "show_in_tooltip": false
-      }
-    },
     "count": 1,
     "id": "burden:backpack"
   }

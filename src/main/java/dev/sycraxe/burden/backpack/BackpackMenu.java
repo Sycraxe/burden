@@ -53,7 +53,7 @@ public class BackpackMenu extends AbstractContainerMenu {
             case BLOCK_BACKPACK -> {
                 BackpackBlockEntity be = (BackpackBlockEntity) inventory.player.level().getBlockEntity(((BackpackContext.Block) context).getBackpackPosition());
                 this.container = be;
-                this.color = be.getColor();
+                this.color = be.getRenderingColor();
             }
             case null, default -> {
                 this.container = null;

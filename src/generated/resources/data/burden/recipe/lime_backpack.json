@@ -1,17 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
-    "W": {
-      "item": "minecraft:brown_wool"
-    },
-    "S": {
-      "item": "minecraft:string"
-    },
     "C": {
       "item": "minecraft:chest"
     },
     "L": {
       "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "W": {
+      "item": "minecraft:lime_wool"
     }
   },
   "pattern": [
@@ -22,8 +23,7 @@
   "result": {
     "components": {
       "minecraft:dyed_color": {
-        "rgb": 8606770,
-        "show_in_tooltip": false
+        "rgb": -8337633
       }
     },
     "count": 1,
