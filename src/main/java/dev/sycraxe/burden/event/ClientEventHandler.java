@@ -1,15 +1,20 @@
 package dev.sycraxe.burden.event;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import dev.sycraxe.burden.backpack.BackpackBlockEntity;
+import dev.sycraxe.burden.register.ModBlock;
+import dev.sycraxe.burden.register.ModItem;
 import dev.sycraxe.burden.register.ModMenuType;
 import dev.sycraxe.burden.backpack.BackpackScreen;
 import dev.sycraxe.burden.network.BackpackOpeningData;
 import dev.sycraxe.burden.backpack.BackpackLayerRenderer;
-import dev.sycraxe.burden.backpack.BackpackModel;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.settings.IKeyConflictContext;
@@ -23,8 +28,9 @@ public class ClientEventHandler {
     public static void register(IEventBus modBus) {
         modBus.addListener(ClientEventHandler::registerBindings);
         modBus.addListener(ClientEventHandler::registerScreens);
-        modBus.addListener(ClientEventHandler::registerLayerDefinitions);
         modBus.addListener(ClientEventHandler::addPlayerLayers);
+        modBus.addListener(ClientEventHandler::registerBlockColorHandlers);
+        modBus.addListener(ClientEventHandler::registerItemColorHandlers);
 
         IEventBus eventBus = NeoForge.EVENT_BUS;
         eventBus.addListener(ClientEventHandler::onClientTick);
@@ -44,10 +50,6 @@ public class ClientEventHandler {
 
     private static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuType.BACKPACK_MENU.get(), BackpackScreen::new);
-    }
-
-    private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(BackpackModel.LAYER_LOCATION, BackpackModel::createBodyLayer);
     }
 
     private static void addPlayerLayers(EntityRenderersEvent.AddLayers event) {
@@ -76,5 +78,25 @@ public class ClientEventHandler {
         public boolean conflicts(IKeyConflictContext other) {
             return this == other;
         }
+    }
+
+    public static void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+        event.register(
+                (state, level, pos, tintIndex) -> {
+                    if (level == null) return DyeColor.WHITE.getTextureDiffuseColor();
+                    if (pos == null) return DyeColor.WHITE.getTextureDiffuseColor();
+                    BlockEntity be = level.getBlockEntity(pos);
+                    if (!(be instanceof BackpackBlockEntity)) return DyeColor.WHITE.getTextureDiffuseColor();
+                    return ((BackpackBlockEntity) be).getColor();
+                },
+                ModBlock.BACKPACK.value()
+        );
+    }
+
+    public static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
+        event.register(
+                (stack, tintIndex) -> DyedItemColor.getOrDefault(stack, DyeColor.WHITE.getTextureDiffuseColor()),
+                ModItem.BACKPACK.value()
+        );
     }
 }

@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "item": "minecraft:brown_wool"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "SLS",
+    "WCW",
+    "SLS"
+  ],
+  "result": {
+    "components": {
+      "minecraft:dyed_color": {
+        "rgb": 8606770,
+        "show_in_tooltip": false
+      }
+    },
+    "count": 1,
+    "id": "burden:backpack"
+  }
+}

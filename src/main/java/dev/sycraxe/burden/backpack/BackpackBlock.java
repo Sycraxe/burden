@@ -1,23 +1,23 @@
 package dev.sycraxe.burden.backpack;
 
 import com.mojang.serialization.MapCodec;
-import dev.sycraxe.burden.register.ModItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 public class BackpackBlock extends BaseEntityBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE = Block.box(4, 0, 5.5, 12, 10, 10.5);
@@ -89,7 +88,7 @@ public class BackpackBlock extends BaseEntityBlock {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof BackpackBlockEntity backpackBlockEntity) {
             if (!level.isClientSide && player.isCreative() && !backpackBlockEntity.isEmpty()) {
-                ItemStack itemstack = ModItem.BACKPACK.toStack();
+                ItemStack itemstack = new ItemStack(this.asItem());
                 itemstack.applyComponents(blockEntity.collectComponents());
                 ItemEntity itementity = new ItemEntity(level, (double)pos.getX() + (double)0.5F, (double)pos.getY() + (double)0.5F, (double)pos.getZ() + (double)0.5F, itemstack);
                 itementity.setDefaultPickUpDelay();
@@ -101,7 +100,19 @@ public class BackpackBlock extends BaseEntityBlock {
     }
 
     @Override
-    public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, @Nullable Entity entity) {
+    public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
         return SoundType.WOOL;
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof BackpackBlockEntity backpackBlockEntity) {
+            if (stack.has(DataComponents.DYED_COLOR)) {
+                DyedItemColor color = stack.get(DataComponents.DYED_COLOR);
+                backpackBlockEntity.setColor(color != null ? color.rgb() : DyeColor.WHITE.getTextureDiffuseColor());
+            }
+        }
     }
 }

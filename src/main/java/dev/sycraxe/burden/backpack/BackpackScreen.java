@@ -16,6 +16,8 @@ public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
     private static final ResourceLocation INVENTORY =
             ResourceLocation.fromNamespaceAndPath(Burden.MOD_ID, "textures/gui/container/inventory.png");
 
+    private int color;
+
     public BackpackScreen(BackpackMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 248;
@@ -24,6 +26,7 @@ public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
         this.titleLabelY = 8;
         this.inventoryLabelX += 36;
         this.inventoryLabelY = 92;
+        this.color = menu.color;
     }
 
     @Override
@@ -34,13 +37,20 @@ public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+        float r = ((this.color >> 16) & 0xFF) / 255.0F;
+        float g = ((this.color >> 8)  & 0xFF) / 255.0F;
+        float b = (this.color         & 0xFF) / 255.0F;
+        float a = 1.0F;
+        graphics.setColor(r, g, b, a);
         graphics.blit(BACKPACK, this.leftPos + 36, this.topPos, 0, 0, 176, 81);
+        graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        graphics.blit(BACKPACK, this.leftPos + 36, this.topPos + 5, 0, 5, 176, 13);
         graphics.blit(INVENTORY, this.leftPos, this.topPos + 77, 0, 0, this.imageWidth, 108);
     }
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xD0D6D7, false);
+        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFFD7CC, false);
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0x404040, false);
     }
 

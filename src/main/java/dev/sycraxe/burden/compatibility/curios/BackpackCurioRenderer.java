@@ -1,9 +1,9 @@
 package dev.sycraxe.burden.compatibility.curios;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.sycraxe.burden.backpack.BackpackModel;
-import net.minecraft.client.Minecraft;
+import dev.sycraxe.burden.backpack.BackpackLayerRenderer;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -28,9 +28,8 @@ public class BackpackCurioRenderer implements ICurioRenderer {
             float netHeadYaw,
             float headPitch
     ) {
-        if (slotContext.entity() instanceof AbstractClientPlayer player) {
-            BackpackModel model = new BackpackModel(Minecraft.getInstance().getEntityModels().bakeLayer(BackpackModel.LAYER_LOCATION));
-            model.setupAndRender(player, matrixStack, renderTypeBuffer, light);
+        if (slotContext.entity() instanceof AbstractClientPlayer player && renderLayerParent.getModel() instanceof HumanoidModel<?> humanoidModel) {
+            BackpackLayerRenderer.backpackRender(humanoidModel, matrixStack, renderTypeBuffer, light, stack, player);
         }
     }
 }

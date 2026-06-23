@@ -14,8 +14,7 @@ public class ModBlockEntity {
 
     public static final Supplier<BlockEntityType<BackpackBlockEntity>> BACKPACK_BLOCK_ENTITY = BLOCK_ENTITIES.register(
             "backpack",
-            () -> BlockEntityType.Builder.of(BackpackBlockEntity::new, ModBlock.BACKPACK.get())
-                    .build(null)
+            () -> BlockEntityType.Builder.of(BackpackBlockEntity::new, ModBlock.BACKPACK.get()).build(null)
     );
 
     public static void register(IEventBus bus) {

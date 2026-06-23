@@ -2,6 +2,7 @@
 .gradle
 build
 run
+src/generated/resources/.cache/
 
 # IDE
 .idea

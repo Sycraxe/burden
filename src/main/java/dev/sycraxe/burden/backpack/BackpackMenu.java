@@ -3,7 +3,6 @@ package dev.sycraxe.burden.backpack;
 import com.mojang.datafixers.util.Pair;
 import dev.sycraxe.burden.inventory.InventoryHandlerSlot;
 import dev.sycraxe.burden.register.ModInventoryHandler;
-import dev.sycraxe.burden.register.ModItem;
 import dev.sycraxe.burden.register.ModMenuType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -16,8 +15,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
@@ -28,6 +28,7 @@ public class BackpackMenu extends AbstractContainerMenu {
     private static final EquipmentSlot[] EQUIPMENT_SLOTS;
     private static final Map<EquipmentSlot, ResourceLocation> TEXTURE_EMPTY_SLOTS;
     private final Container container;
+    public final int color;
 
     public BackpackMenu(int id, Inventory inventory, FriendlyByteBuf buffer) {
         this(id, inventory, BackpackContext.fromBuffer(buffer));
@@ -46,12 +47,17 @@ public class BackpackMenu extends AbstractContainerMenu {
                 if (handlerSlot.handler().equals(ModInventoryHandler.MAIN_HAND_INVENTORY)) unpickableSlot = OptionalInt.of(inventory.selected);
                 if (handlerSlot.handler().equals(ModInventoryHandler.OFFHAND_INVENTORY)) unpickableSlot = OptionalInt.of(Inventory.SLOT_OFFHAND);
                 if (handlerSlot.handler().equals(ModInventoryHandler.CHEST_INVENTORY)) unpickableSlot = OptionalInt.of(38);
+
+                this.color = DyedItemColor.getOrDefault(stack, DyeColor.WHITE.getTextureDiffuseColor());
             }
             case BLOCK_BACKPACK -> {
-                this.container = (BackpackBlockEntity) inventory.player.level().getBlockEntity(((BackpackContext.Block) context).getBackpackPosition());
+                BackpackBlockEntity be = (BackpackBlockEntity) inventory.player.level().getBlockEntity(((BackpackContext.Block) context).getBackpackPosition());
+                this.container = be;
+                this.color = be.getColor();
             }
             case null, default -> {
                 this.container = null;
+                this.color = DyeColor.WHITE.getTextureDiffuseColor();
                 return;
             }
         }

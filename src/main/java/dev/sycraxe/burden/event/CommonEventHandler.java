@@ -1,18 +1,25 @@
 package dev.sycraxe.burden.event;
 
 import dev.sycraxe.burden.backpack.BackpackContext;
+import dev.sycraxe.burden.backpack.BackpackItem;
 import dev.sycraxe.burden.backpack.BackpackMenu;
 import dev.sycraxe.burden.inventory.InventoryHandlerSlot;
 import dev.sycraxe.burden.network.BackpackOpeningData;
+import dev.sycraxe.burden.recipe.BurdenRecipeProvider;
 import dev.sycraxe.burden.register.*;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class CommonEventHandler {
     public static void register(IEventBus modBus) {
@@ -22,7 +29,9 @@ public class CommonEventHandler {
         ModMenuType.register(modBus);
         ModTab.register(modBus);
         ModCompatibility.register(modBus);
+        ModRecipeSerializer.register(modBus);
         modBus.addListener(CommonEventHandler::registerPayloads);
+        modBus.addListener(CommonEventHandler::gatherData);
     }
 
     private static void registerPayloads(final RegisterPayloadHandlersEvent event) {
@@ -32,13 +41,24 @@ public class CommonEventHandler {
             BackpackOpeningData.STREAM_CODEC,
             (final BackpackOpeningData data, final IPayloadContext payloadContext) -> {
                 Player player = payloadContext.player();
-                Optional<InventoryHandlerSlot> maybeHandlerSlot = ModInventoryHandler.ON_KEYBIND.find(player, (s) -> s.is(ModItem.BACKPACK));
+                Optional<InventoryHandlerSlot> maybeHandlerSlot = ModInventoryHandler.ON_KEYBIND.find(player, (s) -> s.getItem() instanceof BackpackItem);
                 if (maybeHandlerSlot.isPresent()) {
                     InventoryHandlerSlot handlerSlot = maybeHandlerSlot.get();
                     BackpackContext backpackContext = new BackpackContext.Item(handlerSlot);
                     player.openMenu(new SimpleMenuProvider((id, inventory, p) -> new BackpackMenu(id, inventory, backpackContext), handlerSlot.handler().get(player, handlerSlot.index()).getHoverName()), backpackContext::toBuffer);
                 }
             }
+        );
+    }
+
+    private static void gatherData(final GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        PackOutput output = generator.getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+
+        generator.addProvider(
+                event.includeServer(),
+                new BurdenRecipeProvider(output, lookupProvider)
         );
     }
 }
