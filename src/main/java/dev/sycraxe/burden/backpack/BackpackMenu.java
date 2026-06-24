@@ -48,7 +48,7 @@ public class BackpackMenu extends AbstractContainerMenu {
                 if (handlerSlot.handler().equals(ModInventoryHandler.OFFHAND_INVENTORY)) unpickableSlot = OptionalInt.of(Inventory.SLOT_OFFHAND);
                 if (handlerSlot.handler().equals(ModInventoryHandler.CHEST_INVENTORY)) unpickableSlot = OptionalInt.of(38);
 
-                this.color = DyedItemColor.getOrDefault(stack, DyeColor.WHITE.getTextureDiffuseColor());
+                this.color = DyedItemColor.getOrDefault(stack, BackpackBlockEntity.getDefaultColor());
             }
             case BLOCK_BACKPACK -> {
                 BackpackBlockEntity be = (BackpackBlockEntity) inventory.player.level().getBlockEntity(((BackpackContext.Block) context).getBackpackPosition());
@@ -57,7 +57,7 @@ public class BackpackMenu extends AbstractContainerMenu {
             }
             case null, default -> {
                 this.container = null;
-                this.color = DyeColor.WHITE.getTextureDiffuseColor();
+                this.color = BackpackBlockEntity.getDefaultColor();
                 return;
             }
         }

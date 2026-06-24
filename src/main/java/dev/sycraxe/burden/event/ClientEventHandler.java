@@ -12,7 +12,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.PlayerSkin;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.IEventBus;
@@ -98,7 +97,7 @@ public class ClientEventHandler {
 
     public static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register(
-                (stack, tintIndex) -> DyedItemColor.getOrDefault(stack, DyeColor.WHITE.getTextureDiffuseColor()),
+                (stack, tintIndex) -> DyedItemColor.getOrDefault(stack, BackpackBlockEntity.getDefaultColor()),
                 ModItem.BACKPACK.value()
         );
     }
